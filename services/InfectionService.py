@@ -9,7 +9,9 @@ class InfectionService:
     DEATHS = "deaths"
     RECOVERED = "recovered"
     DAY = "day"
-    CASES_PER_MILION = "cases_per_million"
+    CONFIRMED_CASES_PER_MILLION = "confirmed_cases_per_million"
+    DEATHS_CASES_PER_MILLION = "deaths_cases_per_million"
+    RECOVERED_CASES_PER_MILLION = "recovered_cases_per_million"
 
     def get_infection_data_for_the_country(self, country):
 
@@ -45,14 +47,16 @@ class InfectionService:
                     "confirmed": confirmed,
                     "deaths": deaths,
                     "recovered": recovered,
-                    "cases_per_million": (confirmed * 1000000) / population["value"]
+                    "confirmed_cases_per_million": (confirmed * 1000000) / population["value"],
+                    "deaths_cases_per_million": (deaths * 1000000) / population["value"],
+                    "recovered_cases_per_million": (recovered * 1000000) / population["value"]
                 }
                 infection_data_list.append(infection_data)
                 current_day += 1
 
         return infection_data_list
 
-    def get_countries_chart_data(self, countries):
+    def get_countries_chart_data(self, countries, key_data=CONFIRMED_CASES_PER_MILLION):
 
         infection_data = {}
 
@@ -62,14 +66,14 @@ class InfectionService:
 
                 for day_data in country_data:
                     day = day_data[InfectionService.DAY]
-                    confirmed = day_data[InfectionService.CASES_PER_MILION]
+                    data = day_data[key_data]
 
                     if day not in infection_data:
                         infection_data[day] = {
-                            country: confirmed
+                            country: data
                         }
                     else:
-                        infection_data[day][country] = confirmed
+                        infection_data[day][country] = data
 
         chart_data = []
 
@@ -110,7 +114,8 @@ class InfectionService:
 
                     country_entry = {
                         "value": country_iso,
-                        "label": country
+                        "label": country,
+                        "color": "#000"
                     }
 
                     if country_entry not in countries:
