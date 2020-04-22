@@ -13,6 +13,24 @@ class Countries(Resource):
         return self.infection_service.get_list_of_countries()
 
 
+class InfectionDataRaw(Resource):
+
+    ENDPOINT = "/infection/all"
+
+    def __init__(self):
+        self.infection_service = InfectionService()
+
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument("countries", type=str)
+
+    def get(self):
+        args = self.reqparse.parse_args()
+
+        countries = args["countries"].split(",")
+
+        return self.infection_service.get_infection_data_for_the_countries(countries=countries)
+
+
 class InfectionConfirmedPerMillion(Resource):
 
     ENDPOINT = "/infection/confirmed/per_million"

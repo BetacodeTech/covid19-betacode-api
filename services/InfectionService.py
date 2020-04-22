@@ -13,6 +13,16 @@ class InfectionService:
     DEATHS_CASES_PER_MILLION = "deaths_cases_per_million"
     RECOVERED_CASES_PER_MILLION = "recovered_cases_per_million"
 
+    def get_infection_data_for_the_countries(self, countries):
+
+        countries_data = {}
+
+        for country in countries:
+            if country:
+                countries_data[country] = self.get_infection_data_for_the_country(country)
+
+        return countries_data
+
     def get_infection_data_for_the_country(self, country):
 
         population_data = self.get_population_data()
@@ -43,13 +53,15 @@ class InfectionService:
                 continue
             else:
                 infection_data = {
+                    "name": population["name"],
+                    "date": date,
                     "day": ""+str(current_day),
                     "confirmed": confirmed,
                     "deaths": deaths,
                     "recovered": recovered,
-                    "confirmed_cases_per_million": (confirmed * 1000000) / population["value"],
-                    "deaths_cases_per_million": (deaths * 1000000) / population["value"],
-                    "recovered_cases_per_million": (recovered * 1000000) / population["value"]
+                    "confirmed_cases_per_million": round((confirmed * 1000000) / population["value"], 2),
+                    "deaths_cases_per_million": round((deaths * 1000000) / population["value"], 2),
+                    "recovered_cases_per_million": round((recovered * 1000000) / population["value"], 2)
                 }
                 infection_data_list.append(infection_data)
                 current_day += 1
@@ -147,14 +159,16 @@ class InfectionService:
                         if year > population_dict[country_iso]["year"]:
                             population_dict[country_iso] = {
                                 "year": year,
-                                "value": value
+                                "value": value,
+                                "name": country
                             }
                         else:
                             continue
                     else:
                         population_dict[country_iso] = {
                             "year": year,
-                            "value": value
+                            "value": value,
+                            "name": country
                         }
 
             return population_dict
