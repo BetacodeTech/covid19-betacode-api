@@ -3,7 +3,8 @@ from flask_restful import Api
 from flask_cors import CORS
 
 from api.VersionAPI import Version
-from api.InfectionAPI import InfectionConfirmedPerMillion, InfectionDeathsPerMillion, Countries, InfectionDataRaw
+from api.InfectionAPI import InfectionConfirmedPerMillion, InfectionDeathsPerMillion, Countries, InfectionDataRaw, \
+    InfectionRecoveredPerMillion, InfectionConfirmed, InfectionDeaths, InfectionRecovered, InfectionCountry
 
 API_PREFIX = "/v1"
 
@@ -12,8 +13,17 @@ CORS(app)
 api = Api(app=app, prefix=API_PREFIX)
 
 api.add_resource(Version, Version.ENDPOINT)
+
 api.add_resource(InfectionConfirmedPerMillion, InfectionConfirmedPerMillion.ENDPOINT)
 api.add_resource(InfectionDeathsPerMillion, InfectionDeathsPerMillion.ENDPOINT)
+api.add_resource(InfectionRecoveredPerMillion, InfectionRecoveredPerMillion.ENDPOINT)
+
+api.add_resource(InfectionConfirmed, InfectionConfirmed.ENDPOINT)
+api.add_resource(InfectionDeaths, InfectionDeaths.ENDPOINT)
+api.add_resource(InfectionRecovered, InfectionRecovered.ENDPOINT)
+
+api.add_resource(InfectionCountry, InfectionCountry.ENDPOINT)
+
 api.add_resource(Countries, Countries.ENDPOINT)
 api.add_resource(InfectionDataRaw, InfectionDataRaw.ENDPOINT)
 

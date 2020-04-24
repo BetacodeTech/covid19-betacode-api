@@ -9,6 +9,7 @@ class InfectionService:
     DEATHS = "deaths"
     RECOVERED = "recovered"
     DAY = "day"
+    DATE = "date"
     CONFIRMED_CASES_PER_MILLION = "confirmed_cases_per_million"
     DEATHS_CASES_PER_MILLION = "deaths_cases_per_million"
     RECOVERED_CASES_PER_MILLION = "recovered_cases_per_million"
@@ -67,6 +68,42 @@ class InfectionService:
                 current_day += 1
 
         return infection_data_list
+
+    def get_country_chart_data(self, countries):
+        country_chart_data = {}
+        for country in countries:
+            if country:
+                country_data = self.get_infection_data_for_the_country(country)
+
+                chart_data = {
+                    "data": []
+                }
+
+                for day_data in country_data:
+                    day = day_data[InfectionService.DAY]
+                    date = day_data[InfectionService.DATE]
+
+                    recovered = day_data[InfectionService.RECOVERED]
+                    deaths = day_data[InfectionService.DEATHS]
+                    confirmed = day_data[InfectionService.CONFIRMED]
+
+                    recovered_per_million = day_data[InfectionService.RECOVERED_CASES_PER_MILLION]
+                    death_per_million = day_data[InfectionService.DEATHS_CASES_PER_MILLION]
+                    confirmed_per_million = day_data[InfectionService.CONFIRMED_CASES_PER_MILLION]
+
+                    chart_data["data"].append({
+                        "day": day,
+                        "date": date,
+                        "recovered":recovered,
+                        "deaths": deaths,
+                        "confirmed": confirmed,
+                        "recovered_per_million": recovered_per_million,
+                        "death_per_million": death_per_million,
+                        "confirmed_per_million": confirmed_per_million
+                    })
+                    country_chart_data[country] = chart_data
+
+        return country_chart_data
 
     def get_countries_chart_data(self, countries, key_data=CONFIRMED_CASES_PER_MILLION):
 
