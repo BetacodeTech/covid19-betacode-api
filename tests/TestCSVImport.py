@@ -14,7 +14,7 @@ class TestCSVPopulation(unittest.TestCase):
 
     def testParseCSVFIle(self):
 
-        with open('../data/population.csv') as csv_file:
+        with open('./data/population.csv') as csv_file:
 
             csv_reader = csv.reader(csv_file, delimiter=",")
 

@@ -13,6 +13,9 @@ class InfectionService:
     CONFIRMED_CASES_PER_MILLION = "confirmed_cases_per_million"
     DEATHS_CASES_PER_MILLION = "deaths_cases_per_million"
     RECOVERED_CASES_PER_MILLION = "recovered_cases_per_million"
+    DAILY_CONFIRMED = "daily_confirmed"
+    DAILY_DEATHS = "daily_deaths"
+    DAILY_RECOVERED = "daily_recovered"
 
     def get_infection_data_for_the_countries(self, countries):
 
@@ -189,7 +192,7 @@ class InfectionService:
 
         population_dict = {}
 
-        with open('../data/population.csv') as csv_file:
+        with open('./data/population.csv') as csv_file:
 
             csv_reader = csv.reader(csv_file, delimiter=",")
 

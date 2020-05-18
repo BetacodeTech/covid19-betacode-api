@@ -4,7 +4,8 @@ from flask_cors import CORS
 
 from api.VersionAPI import Version
 from api.InfectionAPI import InfectionConfirmedPerMillion, InfectionDeathsPerMillion, Countries, InfectionDataRaw, \
-    InfectionRecoveredPerMillion, InfectionConfirmed, InfectionDeaths, InfectionRecovered, InfectionCountry
+    InfectionRecoveredPerMillion, InfectionConfirmed, InfectionDeaths, InfectionRecovered, InfectionCountry,\
+    InfectionDailyConfirmed, InfectionDailyDeaths, InfectionDailyRecovered
 
 API_PREFIX = "/v1"
 
@@ -23,6 +24,10 @@ api.add_resource(InfectionDeaths, InfectionDeaths.ENDPOINT)
 api.add_resource(InfectionRecovered, InfectionRecovered.ENDPOINT)
 
 api.add_resource(InfectionCountry, InfectionCountry.ENDPOINT)
+
+api.add_resource(InfectionDailyConfirmed, InfectionDailyConfirmed.ENDPOINT)
+api.add_resource(InfectionDailyDeaths, InfectionDailyDeaths.ENDPOINT)
+api.add_resource(InfectionDailyRecovered, InfectionDailyRecovered.ENDPOINT)
 
 api.add_resource(Countries, Countries.ENDPOINT)
 api.add_resource(InfectionDataRaw, InfectionDataRaw.ENDPOINT)
