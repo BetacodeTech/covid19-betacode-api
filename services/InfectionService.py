@@ -34,6 +34,9 @@ class InfectionService:
 
         current_day = 1
         infection_data_list = []
+        previous_confirmed = 0
+        previous_deaths = 0
+        previous_recovered = 0
 
         for date in response["result"]:
 
@@ -43,6 +46,13 @@ class InfectionService:
             deaths = data[InfectionService.DEATHS]
             recovered = data[InfectionService.RECOVERED]
             population = population_data[country]
+            daily_confirmed = confirmed - previous_confirmed
+            daily_deaths = deaths - previous_deaths
+            daily_recovered = recovered - previous_recovered
+
+            previous_confirmed = confirmed
+            previous_deaths = deaths
+            previous_recovered = recovered
 
 
             # infected - total
@@ -62,7 +72,10 @@ class InfectionService:
                     "recovered": recovered,
                     "confirmed_cases_per_million": round((confirmed * 1000000) / population["value"], 2),
                     "deaths_cases_per_million": round((deaths * 1000000) / population["value"], 2),
-                    "recovered_cases_per_million": round((recovered * 1000000) / population["value"], 2)
+                    "recovered_cases_per_million": round((recovered * 1000000) / population["value"], 2),
+                    "daily_confirmed": daily_confirmed,
+                    "daily_deaths": daily_deaths,
+                    "daily_recovered": daily_recovered
                 }
                 infection_data_list.append(infection_data)
                 current_day += 1
@@ -176,7 +189,7 @@ class InfectionService:
 
         population_dict = {}
 
-        with open('./data/population.csv') as csv_file:
+        with open('../data/population.csv') as csv_file:
 
             csv_reader = csv.reader(csv_file, delimiter=",")
 
@@ -209,6 +222,3 @@ class InfectionService:
                         }
 
             return population_dict
-
-
-
