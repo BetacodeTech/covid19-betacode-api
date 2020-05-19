@@ -39,6 +39,8 @@ class TestCovidAPI(unittest.TestCase):
 
             self.assertEqual(infection_data[0]["daily_confirmed"], infection_data[0][InfectionService.CONFIRMED])
 
+            self.assertGreaterEqual(infection_data[0][InfectionService.CONFIRMED], 0)
+
             self.assertEqual(infection_data[i]["daily_deaths"],
                              infection_data[i][InfectionService.DEATHS] -
                              infection_data[i - 1][InfectionService.DEATHS])

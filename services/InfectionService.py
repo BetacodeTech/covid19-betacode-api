@@ -1,6 +1,6 @@
+from math import fabs
 import requests
 import csv
-from models.InfectionData import InfectionData
 
 
 class InfectionService:
@@ -49,9 +49,9 @@ class InfectionService:
             deaths = data[InfectionService.DEATHS]
             recovered = data[InfectionService.RECOVERED]
             population = population_data[country]
-            daily_confirmed = confirmed - previous_confirmed
-            daily_deaths = deaths - previous_deaths
-            daily_recovered = recovered - previous_recovered
+            daily_confirmed = fabs(confirmed - previous_confirmed)
+            daily_deaths = fabs(deaths - previous_deaths)
+            daily_recovered = fabs(recovered - previous_recovered)
 
             previous_confirmed = confirmed
             previous_deaths = deaths
