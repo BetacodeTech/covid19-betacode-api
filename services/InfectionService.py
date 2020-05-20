@@ -1,6 +1,6 @@
+from math import fabs
 import requests
 import csv
-from models.InfectionData import InfectionData
 
 
 class InfectionService:
@@ -13,6 +13,9 @@ class InfectionService:
     CONFIRMED_CASES_PER_MILLION = "confirmed_cases_per_million"
     DEATHS_CASES_PER_MILLION = "deaths_cases_per_million"
     RECOVERED_CASES_PER_MILLION = "recovered_cases_per_million"
+    DAILY_CONFIRMED = "daily_confirmed"
+    DAILY_DEATHS = "daily_deaths"
+    DAILY_RECOVERED = "daily_recovered"
 
     def get_infection_data_for_the_countries(self, countries):
 
@@ -34,6 +37,9 @@ class InfectionService:
 
         current_day = 1
         infection_data_list = []
+        previous_confirmed = 0
+        previous_deaths = 0
+        previous_recovered = 0
 
         for date in response["result"]:
 
@@ -43,6 +49,13 @@ class InfectionService:
             deaths = data[InfectionService.DEATHS]
             recovered = data[InfectionService.RECOVERED]
             population = population_data[country]
+            daily_confirmed = fabs(confirmed - previous_confirmed)
+            daily_deaths = fabs(deaths - previous_deaths)
+            daily_recovered = fabs(recovered - previous_recovered)
+
+            previous_confirmed = confirmed
+            previous_deaths = deaths
+            previous_recovered = recovered
 
 
             # infected - total
@@ -62,7 +75,10 @@ class InfectionService:
                     "recovered": recovered,
                     "confirmed_cases_per_million": round((confirmed * 1000000) / population["value"], 2),
                     "deaths_cases_per_million": round((deaths * 1000000) / population["value"], 2),
-                    "recovered_cases_per_million": round((recovered * 1000000) / population["value"], 2)
+                    "recovered_cases_per_million": round((recovered * 1000000) / population["value"], 2),
+                    "daily_confirmed": daily_confirmed,
+                    "daily_deaths": daily_deaths,
+                    "daily_recovered": daily_recovered
                 }
                 infection_data_list.append(infection_data)
                 current_day += 1
@@ -209,6 +225,3 @@ class InfectionService:
                         }
 
             return population_dict
-
-
-

@@ -3,7 +3,6 @@ from services.InfectionService import InfectionService
 
 
 class Countries(Resource):
-
     ENDPOINT = "/countries"
 
     def __init__(self):
@@ -14,7 +13,6 @@ class Countries(Resource):
 
 
 class InfectionDataRaw(Resource):
-
     ENDPOINT = "/infection/all"
 
     def __init__(self):
@@ -32,7 +30,6 @@ class InfectionDataRaw(Resource):
 
 
 class InfectionConfirmedPerMillion(Resource):
-
     ENDPOINT = "/infection/confirmed/per_million"
 
     def __init__(self):
@@ -42,7 +39,6 @@ class InfectionConfirmedPerMillion(Resource):
         self.reqparse.add_argument("countries", type=str)
 
     def get(self):
-
         args = self.reqparse.parse_args()
 
         countries = args["countries"].split(",")
@@ -51,7 +47,6 @@ class InfectionConfirmedPerMillion(Resource):
 
 
 class InfectionDeathsPerMillion(Resource):
-
     ENDPOINT = "/infection/deaths/per_million"
 
     def __init__(self):
@@ -61,12 +56,12 @@ class InfectionDeathsPerMillion(Resource):
         self.reqparse.add_argument("countries", type=str)
 
     def get(self):
-
         args = self.reqparse.parse_args()
 
         countries = args["countries"].split(",")
 
-        return self.infection_service.get_countries_chart_data(countries=countries, key_data=InfectionService.DEATHS_CASES_PER_MILLION)
+        return self.infection_service.get_countries_chart_data(countries=countries,
+                                                               key_data=InfectionService.DEATHS_CASES_PER_MILLION)
 
 
 class InfectionRecoveredPerMillion(Resource):
@@ -88,7 +83,6 @@ class InfectionRecoveredPerMillion(Resource):
 
 
 class InfectionConfirmed(Resource):
-
     ENDPOINT = "/infection/confirmed"
 
     def __init__(self):
@@ -107,7 +101,6 @@ class InfectionConfirmed(Resource):
 
 
 class InfectionDeaths(Resource):
-
     ENDPOINT = "/infection/deaths"
 
     def __init__(self):
@@ -126,7 +119,6 @@ class InfectionDeaths(Resource):
 
 
 class InfectionRecovered(Resource):
-
     ENDPOINT = "/infection/recovered"
 
     def __init__(self):
@@ -145,7 +137,6 @@ class InfectionRecovered(Resource):
 
 
 class InfectionCountry(Resource):
-
     ENDPOINT = "/infection/chartdata"
 
     def __init__(self):
@@ -159,3 +150,57 @@ class InfectionCountry(Resource):
         countries = args["countries"].split(",")
 
         return self.infection_service.get_country_chart_data(countries)
+
+
+class InfectionDailyConfirmed(Resource):
+    ENDPOINT = "/infection/confirmed/daily"
+
+    def __init__(self):
+        self.infection_service = InfectionService()
+
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument("countries", type=str)
+
+    def get(self):
+        args = self.reqparse.parse_args()
+
+        countries = args["countries"].split(",")
+
+        return self.infection_service.get_countries_chart_data(countries=countries,
+                                                               key_data=InfectionService.DAILY_CONFIRMED)
+
+
+class InfectionDailyDeaths(Resource):
+    ENDPOINT = "/infection/deaths/daily"
+
+    def __init__(self):
+        self.infection_service = InfectionService()
+
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument("countries", type=str)
+
+    def get(self):
+        args = self.reqparse.parse_args()
+
+        countries = args["countries"].split(",")
+
+        return self.infection_service.get_countries_chart_data(countries=countries,
+                                                               key_data=InfectionService.DAILY_DEATHS)
+
+
+class InfectionDailyRecovered(Resource):
+    ENDPOINT = "/infection/recovered/daily"
+
+    def __init__(self):
+        self.infection_service = InfectionService()
+
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument("countries", type=str)
+
+    def get(self):
+        args = self.reqparse.parse_args()
+
+        countries = args["countries"].split(",")
+
+        return self.infection_service.get_countries_chart_data(countries=countries,
+                                                               key_data=InfectionService.DAILY_RECOVERED)
